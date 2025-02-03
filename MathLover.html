@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bit Planes Game</title>
+    <style>
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let plane = {
+            x: canvas.width / 2,
+            y: canvas.height - 30,
+            width: 50,
+            height: 30,
+            speed: 5
+        };
+
+        let keys = {};
+
+        document.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+        });
+
+        function drawPlane() {
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(plane.x, plane.y, plane.width, plane.height);
+        }
+
+        function updatePlane() {
+            if (keys['ArrowLeft'] && plane.x > 0) {
+                plane.x -= plane.speed;
+            }
+            if (keys['ArrowRight'] && plane.x < canvas.width - plane.width) {
+                plane.x += plane.speed;
+            }
+            if (keys['ArrowUp'] && plane.y > 0) {
+                plane.y -= plane.speed;
+            }
+            if (keys['ArrowDown'] && plane.y < canvas.height - plane.height) {
+                plane.y += plane.speed;
+            }
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlane();
+            updatePlane();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
